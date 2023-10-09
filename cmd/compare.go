@@ -109,26 +109,29 @@ func compareColumn(sourceColumn Column, targetColumn Column) bool {
 		return false
 	}
 
-	if sourceColumn.ColumnType != targetColumn.ColumnType {
-		if strings.HasPrefix(sourceColumn.ColumnType, "tinyint") &&
-			strings.HasPrefix(targetColumn.ColumnName, "tinyint") {
-			return true
+	if comment {
+		if sourceColumn.ColumnComment != targetColumn.ColumnComment {
+			return false
 		}
-		if strings.HasPrefix(sourceColumn.ColumnType, "int") &&
-			strings.HasPrefix(targetColumn.ColumnName, "int") {
-			return true
-		}
-		return false
 	}
 
 	if sourceColumn.EXTRA != targetColumn.EXTRA {
 		return false
 	}
-
-	if comment {
-		if sourceColumn.ColumnComment != targetColumn.ColumnComment {
-			return false
+	if sourceColumn.ColumnType != targetColumn.ColumnType {
+		if strings.HasPrefix(sourceColumn.ColumnType, "tinyint") &&
+			strings.HasPrefix(targetColumn.ColumnType, "tinyint") {
+			return true
 		}
+		if strings.HasPrefix(sourceColumn.ColumnType, "int") &&
+			strings.HasPrefix(targetColumn.ColumnType, "int") {
+			return true
+		}
+		if strings.HasPrefix(sourceColumn.ColumnType, "bigint") &&
+			strings.HasPrefix(targetColumn.ColumnType, "bigint") {
+			return true
+		}
+		return false
 	}
 
 	return true
